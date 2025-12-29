@@ -1,0 +1,8 @@
+body { background: linear-gradient(135deg, #0f172a, #1e293b); min-height: 100vh; color: white; display: flex; align-items: center; justify-content: center; font-family: sans-serif; }
+.glass-container { background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.2); padding: 50px; border-radius: 30px; width: 80%; text-align: center; }
+.skill-chip { display: inline-block; background: rgba(0, 210, 255, 0.2); padding: 7px 20px; border-radius: 50px; margin: 6px; border: 1px solid #00d2ff; }
+/* Change your glass accent to this */
+.skill-chip { 
+    background: #00d2ff33; /* Adding transparency */
+    border: 1px solid #00d2ff; 
+}

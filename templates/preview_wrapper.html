@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Preview</title>
+    <link rel="stylesheet" href="/static/preview.css">
+</head>
+<body>
+    <div class="preview-wrapper">
+        <div class="preview-header">
+            <h2>📄 Portfolio Preview</h2>
+            <a href="/download/{{JOB_ID}}" id="downloadBtn" class="download-button">📥 Download Portfolio</a>
+        </div>
+        <div class="preview-content">
+            <iframe id="portfolioFrame" src="/preview/{{JOB_ID}}/content" frameborder="0"></iframe>
+        </div>
+    </div>
+</body>
+</html>
+
