@@ -1,0 +1,40 @@
+:root { --accent: {{COLOR}}; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { 
+    background: radial-gradient(circle at top right, #1a1a2e, #16213e);
+    min-height: 100vh;
+    color: white;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+.glass-container { 
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 60px;
+    border-radius: 40px;
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+h1 { font-size: 3rem; margin-bottom: 20px; letter-spacing: -1px; }
+.bio { font-size: 1.2rem; line-height: 1.6; opacity: 0.8; margin-bottom: 40px; }
+.skills-grid { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 12px; 
+}
+.skill-chip { 
+    background: var(--accent);
+    padding: 10px 25px;
+    border-radius: 100px;
+    font-weight: 600;
+    box-shadow: 0 0 20px var(--accent);
+    transition: transform 0.3s;
+}
+.skill-chip:hover { transform: scale(1.1); }

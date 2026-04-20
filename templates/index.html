@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Portfolio Generator</title>
+    <link rel="stylesheet" href="/static/style.css?v=4">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+</head>
+<body>
+    <div class="hero">
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="meteor"></div>
+        <div class="planet"></div>
+        <div class="planet"></div>
+        <div class="planet"></div>
+        <div class="container">
+        <h1>🎨 ML Portfolio Generator</h1>
+        <p class="subtitle">Upload your resume PDF and generate a beautiful portfolio website</p>
+        
+        <form id="portfolioForm">
+            <div class="form-group">
+                <label for="pdfFile">Upload Resume PDF</label>
+                <input type="file" id="pdfFile" name="file" accept=".pdf" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="theme">Choose Theme</label>
+                <select id="theme" name="theme" required>
+                    <option value="neo">Neo-Brutalism</option>
+                    <option value="glass">Glassmorphism</option>
+                    <option value="gloss">Gloss</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="color">Primary Color</label>
+                <input type="color" id="color" name="primary_color" value="#00d2ff">
+            </div>
+            
+            <button type="submit" id="submitBtn">Generate Portfolio</button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p style="margin-top: 10px; color: #666;">Processing your resume with AI...</p>
+        </div>
+        
+        <div class="result" id="result"></div>
+        </div>
+    </div>
+    
+    <script>
+        // Debug: Log that script is loaded
+        console.log('Portfolio form script loaded - version 4');
+        
+        // Ensure no iframe exists on this page
+        document.addEventListener('DOMContentLoaded', function() {
+            const iframes = document.querySelectorAll('iframe');
+            if (iframes.length > 0) {
+                console.warn('Found iframes on page, removing them:', iframes);
+                iframes.forEach(iframe => iframe.remove());
+            }
+        });
+        
+        document.getElementById('portfolioForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('pdfFile');
+            const theme = document.getElementById('theme').value;
+            const color = document.getElementById('color').value;
+            
+            if (!fileInput.files[0]) {
+                showResult('Please select a PDF file', 'error');
+                return;
+            }
+            
+            formData.append('file', fileInput.files[0]);
+            formData.append('theme', theme);
+            formData.append('primary_color', color);
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            
+            submitBtn.disabled = true;
+            loading.style.display = 'block';
+            result.style.display = 'none';
+            
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.preview_url) {
+                    showResult('✅ Portfolio generated successfully! Opening preview in new window...', 'success');
+                    // Immediately open in new window - don't use setTimeout as it might cause popup blocking
+                    showPreview(data.preview_url, data.job_id);
+                } else {
+                    showResult('❌ Error: ' + (data.detail || 'Failed to generate portfolio'), 'error');
+                }
+            } catch (error) {
+                showResult('❌ Error: ' + error.message, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+        
+        function showResult(message, type) {
+            const result = document.getElementById('result');
+            result.className = 'result ' + type;
+            result.style.display = 'block';
+            result.innerHTML = message;
+        }
+        
+        // Replace the showPreview function in your index.html
+function showPreview(previewUrl, jobId) {
+    const resultDiv = document.getElementById('result');
+    // Using an anchor with target="_blank" is safer than window.open
+    resultDiv.innerHTML = `
+        <div style="background: rgba(0,255,255,0.1); padding: 20px; border-radius: 15px; border: 1px solid #00ffff;">
+            <p style="color: #00ffff; margin-bottom: 15px;">🚀 Portfolio Ready!</p>
+            <a href="${previewUrl}" target="_blank" class="download-button" style="text-decoration: none;">
+                👁️ View Live Preview
+            </a>
+        </div>
+    `;
+    resultDiv.style.display = 'block';
+}
+    </script>
+</body>
+</html>
+
